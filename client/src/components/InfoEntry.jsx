@@ -17,7 +17,7 @@ class InfoEntry extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.itemNameHandler = this.itemNameHandler.bind(this);
     // this.expirationDateHandler = this.expirationDateHandler.bind(this);
-    this.expirationWarningHandler = this.expirationWarningHandler.bind(this);
+    // this.expirationWarningHandler = this.expirationWarningHandler.bind(this);
     this.monthExpHandler = this.monthExpHandler.bind(this);
     this.dayExpHandler = this.dayExpHandler.bind(this);
     this.yearExpHandler = this.yearExpHandler.bind(this);

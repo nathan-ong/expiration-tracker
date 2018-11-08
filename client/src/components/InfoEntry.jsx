@@ -10,7 +10,9 @@ class InfoEntry extends React.Component {
       expMonth: Date().slice(4,7),
       expDay: new Date().getDate(),
       expYear: new Date().getFullYear() - 2000,
-      expirationWarning: null,
+      reminderNum: 1,
+      reminderUnit: 'day(s)',
+      setReminder: false,
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.itemNameHandler = this.itemNameHandler.bind(this);
@@ -19,20 +21,14 @@ class InfoEntry extends React.Component {
     this.monthExpHandler = this.monthExpHandler.bind(this);
     this.dayExpHandler = this.dayExpHandler.bind(this);
     this.yearExpHandler = this.yearExpHandler.bind(this);
+    this.handleCheckbox = this.handleCheckbox.bind(this);
   }
 
   handleSubmit(e) {
-    // const { itemName } = this.state;
-    // e.preventDefault();
     console.log(e);
     console.log('submitted!')
     console.log(this.state);
-    // $.post('/index', this.state);
-    $.ajax({
-      type: 'POST',
-      url: '/index',
-      data: this.state,
-    })
+    $.post('/index', this.state);
 
   }
 
@@ -60,22 +56,16 @@ class InfoEntry extends React.Component {
     })
   }
 
-  // expirationDateHandler(e) {
-  //   console.log(e.target.value)
-  //   console.log(e);
-  //   if (e.target.name === 'day') {
-  //     console.log('DAY!');
-  //   }
-  //   if (e.target.name === 'month') {
-  //     console.log('MONTH!');
-  //   }
-  // }
-
-  expirationWarningHandler(e) {
-
+  handleCheckbox(e) {
+    console.log(document.getElementById('reminder-box').checked);
+    const { setReminder } = this.state;
+    this.setState({
+      setReminder: document.getElementById('reminder-box').checked,
+    })
   }
 
   render(){
+    const { setReminder } = this.state;
     return (
       <div>
         <form className="expiration-entry-form" onSubmit={this.handleSubmit}>
@@ -104,20 +94,28 @@ class InfoEntry extends React.Component {
             })}
           </select>
           <br />
-          <input type="checkbox" name="set-reminder" value="setReminder"/>
+          <input id="reminder-box" type="checkbox" name="set-reminder" value="setReminder" onChange={this.handleCheckbox}/>
           Set Reminder
           <br />
-          <select className="date-warning">
-            {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(num => {
-              return <option name="quantity" key={Math.random()*1000} value={num}>{num}</option>
-            })}
-          </select>
-          <select className="date-warning">
-            {['day(s)', 'month(s)', 'year(s)'].map(timeSpan => {
-              return <option name="units" key={Math.random()*1000} value={timeSpan}>{timeSpan}</option>
-            })}
-          </select>
-          before expiration
+          {
+            setReminder            
+            ? 
+            <div className="reminder-dropdowns">
+              <select className="date-warning">
+                {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(num => {
+                  return <option name="quantity" key={Math.random()*1000} value={num}>{num}</option>
+                })}
+              </select>
+              <select className="date-warning">
+                {['day(s)', 'month(s)', 'year(s)'].map(timeSpan => {
+                  return <option name="units" key={Math.random()*1000} value={timeSpan}>{timeSpan}</option>
+                })}
+              </select>
+              before expiration
+            </div>
+            : null
+          }
+          
           <br />
           <button type="submit">Enter Item</button>
         </form>

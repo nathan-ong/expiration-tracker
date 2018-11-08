@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 
 class InfoEntry extends React.Component {
   constructor(props) {
@@ -6,10 +7,10 @@ class InfoEntry extends React.Component {
 
     this.state = {
       itemName: '',
-      expMonth: null,
-      expDay: null,
-      expYear: null,
-      expirationWarning: ''
+      expMonth: Date().slice(4,7),
+      expDay: new Date().getDate(),
+      expYear: new Date().getFullYear() - 2000,
+      expirationWarning: null,
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.itemNameHandler = this.itemNameHandler.bind(this);
@@ -21,10 +22,18 @@ class InfoEntry extends React.Component {
   }
 
   handleSubmit(e) {
-    e.preventDefault();
+    // const { itemName } = this.state;
+    // e.preventDefault();
     console.log(e);
     console.log('submitted!')
     console.log(this.state);
+    // $.post('/index', this.state);
+    $.ajax({
+      type: 'POST',
+      url: '/index',
+      data: this.state,
+    })
+
   }
 
   itemNameHandler(e) {
@@ -95,7 +104,8 @@ class InfoEntry extends React.Component {
             })}
           </select>
           <br />
-          Expiration warning:
+          <input type="checkbox" name="set-reminder" value="setReminder"/>
+          Set Reminder
           <br />
           <select className="date-warning">
             {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(num => {

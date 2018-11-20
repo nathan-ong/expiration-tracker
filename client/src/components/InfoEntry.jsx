@@ -1,5 +1,6 @@
 import React from "react";
 import $ from "jquery";
+import RenderedInfo from "./RenderedInfo.jsx";
 
 class InfoEntry extends React.Component {
   constructor(props) {
@@ -10,8 +11,8 @@ class InfoEntry extends React.Component {
       expMonth: Date().slice(4, 7),
       expDay: new Date().getDate(),
       expYear: new Date().getFullYear() - 2000,
-      reminderNum: 1,
-      reminderUnit: "day(s)",
+      reminderNum: 'N/A',
+      reminderUnit: 'N/A',
       setReminder: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,13 +21,14 @@ class InfoEntry extends React.Component {
     this.dayExpHandler = this.dayExpHandler.bind(this);
     this.yearExpHandler = this.yearExpHandler.bind(this);
     this.handleCheckbox = this.handleCheckbox.bind(this);
+    this.handleReminderNum = this.handleReminderNum.bind(this);
+    this.handleReminderUnit = this.handleReminderUnit.bind(this);
   }
 
   handleSubmit(e) {
-    console.log(e);
-    console.log("submitted!");
-    console.log(this.state);
-    $.post("/index", this.state);
+    console.log('submitting data');
+    e.preventDefault();
+    $.post("/save", this.state);
   }
 
   itemNameHandler(e) {
@@ -54,19 +56,86 @@ class InfoEntry extends React.Component {
   }
 
   handleCheckbox(e) {
-    console.log(document.getElementById("reminder-box").checked);
-    const { setReminder } = this.state;
+    if (document.getElementById("reminder-box").checked){
+      this.setState({
+        setReminder: true,
+        reminderNum: 1,
+        reminderUnit: 'day(s)'
+      });
+    } else {
+      this.setState({
+        setReminder: false,
+        reminderNum: 'N/A',
+        reminderUnit: 'N/A'
+      })
+    }
+  }
+
+  handleReminderNum(e) {
     this.setState({
-      setReminder: document.getElementById("reminder-box").checked
-    });
+      reminderNum: e.target.value,
+    })
+  }
+
+  handleReminderUnit(e) {
+    this.setState({
+      reminderUnit: e.target.value,
+    })
   }
 
   render() {
-    const { setReminder } = this.state;
-    const monthDays = [];
-    for (let i = 1; i <= 31; i++) {
-      monthDays.push(i);
-    }
+    const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.state;
+    const monthDays = [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ];
+
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+
+    const years = [18, 19, 20, 21];
+    
     return (
       <div>
         <form className="expiration-entry-form" onSubmit={this.handleSubmit}>
@@ -81,9 +150,8 @@ class InfoEntry extends React.Component {
             {monthDays.map(day => {
               return (
                 <option
-                  onSelect={this.expirationDateHandler}
                   name="day"
-                  key={Math.random() * 1000}
+                  key={day}
                   value={day}
                 >
                   {day}
@@ -93,22 +161,9 @@ class InfoEntry extends React.Component {
           </select>
           Month:
           <select className="expiration-date" onChange={this.monthExpHandler}>
-            {[
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec"
-            ].map(month => {
+            {months.map(month => {
               return (
-                <option name="month" key={Math.random() * 1000} value={month}>
+                <option name="month" key={month} value={month}>
                   {month}
                 </option>
               );
@@ -116,9 +171,9 @@ class InfoEntry extends React.Component {
           </select>
           Year:
           <select className="expiration-date" onChange={this.yearExpHandler}>
-            {[18, 19, 20, 21].map(year => {
+            {years.map(year => {
               return (
-                <option name="year" key={Math.random() * 1000} value={year}>
+                <option name="year" key={year} value={year}>
                   {year}
                 </option>
               );
@@ -136,27 +191,25 @@ class InfoEntry extends React.Component {
           <br />
           {setReminder ? (
             <div className="reminder-dropdowns">
-              <select className="date-warning">
-                {monthDays.map(
-                  num => {
-                    return (
-                      <option
-                        name="quantity"
-                        key={Math.random() * 1000}
-                        value={num}
-                      >
-                        {num}
-                      </option>
-                    );
-                  }
-                )}
+              <select className="date-warning" onChange={this.handleReminderNum}>
+                {monthDays.map(num => {
+                  return (
+                    <option
+                      name="quantity"
+                      key={num}
+                      value={num}
+                    >
+                      {num}
+                    </option>
+                  );
+                })}
               </select>
-              <select className="date-warning">
+              <select className="date-warning" onChange={this.handleReminderUnit}>
                 {["day(s)", "month(s)", "year(s)"].map(timeSpan => {
                   return (
                     <option
                       name="units"
-                      key={Math.random() * 1000}
+                      key={timeSpan}
                       value={timeSpan}
                     >
                       {timeSpan}
@@ -168,6 +221,7 @@ class InfoEntry extends React.Component {
             </div>
           ) : null}
           <br />
+          <RenderedInfo itemName={itemName} expDay={expDay} expYear={expYear} expMonth={expMonth} reminderNum={reminderNum} reminderUnit={reminderUnit}/>
           <button type="submit">Enter Item</button>
         </form>
       </div>

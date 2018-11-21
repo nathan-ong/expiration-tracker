@@ -30,8 +30,7 @@ app.post('/save', function(req, res) {
     Nov: 10,
     Dec: 11
   }
-  const { itemName, expDay, expMonth, expYear, setReminder, reminderNum, reminderUnit } = req.body
-  console.log(expYear);
+  const { itemName, expDay, expMonth, expYear, setReminder, reminderNum, reminderUnit } = req.body;
   const expirationDate = new Date(expYear, months[expMonth], expDay);
   const setReminderDate = (number, unit) => {
     const copyDate = new Date(expirationDate.toString());
@@ -39,15 +38,16 @@ app.post('/save', function(req, res) {
       copyDate.setDate(copyDate.getDate() - number);
     }
     if (unit === 'month(s)') {
-      copyDate.setDate(copyDate.getMonth() - number);
+      copyDate.setMonth(copyDate.getMonth() - number);
     }
     if (unit === 'year(s)') {
-      copyDate.setDate(copyDate.getYear() - number);
+      copyDate.setFullYear(copyDate.getFullYear() - number);
     }
     return copyDate;
   }
+
   let reminderDate;
-  if (setReminder) {
+  if (JSON.parse(setReminder)) {
     reminderDate = setReminderDate(reminderNum, reminderUnit); 
   } else {
     reminderDate = null;

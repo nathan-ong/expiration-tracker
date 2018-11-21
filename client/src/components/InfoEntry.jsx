@@ -27,7 +27,6 @@ class InfoEntry extends React.Component {
 
   handleSubmit(e) {
     console.log('submitting data');
-    e.preventDefault();
     $.post("/save", this.state);
   }
 
@@ -135,7 +134,6 @@ class InfoEntry extends React.Component {
     ];
 
     const years = [18, 19, 20, 21];
-    console.log(this.state);
     return (
       <div>
         <form className="expiration-entry-form" onSubmit={this.handleSubmit}>

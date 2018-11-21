@@ -14,10 +14,9 @@ const expSchema = mongoose.Schema({
 const ExpirationData = mongoose.model('ExpirationData', expSchema);
 
 const save = (expData) => {
-  console.log(expData);
   ExpirationData.create(expData, (err, res) => {
     if (err) console.log(err);
-    else console.log(res);
+    else console.log(`successfully saved to db!: \n****************************\n${res}\n********************************`);
   })
 }
 

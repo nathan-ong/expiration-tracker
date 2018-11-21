@@ -7,24 +7,18 @@ class InfoEntry extends React.Component {
   constructor(props) {
     super(props);
 
-  //   this.state = {
-  //     itemName: "",
-  //     expMonth: Date().slice(4, 7),
-  //     expDay: new Date().getDate(),
-  //     expYear: new Date().getFullYear(),
-  //     reminderNum: 'N/A',
-  //     reminderUnit: 'N/A',
-  //     setReminder: false
-  //   };
+    this.state = {
+      itemName: "",
+      expMonth: Date().slice(4, 7),
+      expDay: new Date().getDate(),
+      expYear: new Date().getFullYear(),
+      reminderNum: 'N/A',
+      reminderUnit: 'N/A',
+      setReminder: false
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.itemNameHandler = this.itemNameHandler.bind(this);
-    this.monthExpHandler = this.monthExpHandler.bind(this);
-    this.dayExpHandler = this.dayExpHandler.bind(this);
-    this.yearExpHandler = this.yearExpHandler.bind(this);
     this.handleCheckbox = this.handleCheckbox.bind(this);
-    this.handleReminderNum = this.handleReminderNum.bind(this);
-    this.handleReminderUnit = this.handleReminderUnit.bind(this);
-    // this.onChange = this.onChange.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   handleSubmit(e) {
@@ -32,32 +26,8 @@ class InfoEntry extends React.Component {
     $.post("/save", this.state);
   }
 
-  // onChange(e) {
-  //   console.log(e.target.value);
-  // }
-
-  itemNameHandler(e) {
-    this.setState({
-      itemName: e.target.value
-    });
-  }
-
-  monthExpHandler(e) {
-    this.setState({
-      expMonth: e.target.value
-    });
-  }
-
-  dayExpHandler(e) {
-    this.setState({
-      expDay: e.target.value
-    });
-  }
-
-  yearExpHandler(e) {
-    this.setState({
-      expYear: e.target.value
-    });
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleCheckbox(e) {
@@ -76,20 +46,8 @@ class InfoEntry extends React.Component {
     }
   }
 
-  handleReminderNum(e) {
-    this.setState({
-      reminderNum: e.target.value,
-    })
-  }
-
-  handleReminderUnit(e) {
-    this.setState({
-      reminderUnit: e.target.value,
-    })
-  }
-
   render() {
-    const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.props;
+    const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.state;
     const monthDays = [
       1,
       2,
@@ -150,7 +108,7 @@ class InfoEntry extends React.Component {
           Expiration Date:
           <br />
           Day:
-          <select className="expiration-date" onChange={this.dayExpHandler} defaultValue={expDay}>
+          <select className="expiration-date" name="expDay" onChange={this.onChange} defaultValue={expDay}>
             {monthDays.map(day => {
               return (
                 <option
@@ -164,7 +122,7 @@ class InfoEntry extends React.Component {
             })}
           </select>
           Month:
-          <select className="expiration-date" onChange={this.monthExpHandler} defaultValue={expMonth}>
+          <select className="expiration-date" name="expMonth" onChange={this.onChange} defaultValue={expMonth}>
             {months.map(month => {
               return (
                 <option name="month" key={month} value={month}>
@@ -174,7 +132,7 @@ class InfoEntry extends React.Component {
             })}
           </select>
           Year:
-          <select className="expiration-date" onChange={this.yearExpHandler} defaultValue={expYear}>
+          <select className="expiration-date" name="expYear" onChange={this.onChange} defaultValue={expYear}>
             {years.map(year => {
               return (
                 <option name="year" key={year} value={2000 + year}>
@@ -195,7 +153,7 @@ class InfoEntry extends React.Component {
           <br />
           {setReminder ? (
             <div className="reminder-dropdowns">
-              <select className="date-warning" onChange={this.handleReminderNum}>
+              <select className="date-warning" name="reminderNum" onChange={this.onChange}>
                 {monthDays.map(num => {
                   return (
                     <option
@@ -208,7 +166,7 @@ class InfoEntry extends React.Component {
                   );
                 })}
               </select>
-              <select className="date-warning" onChange={this.handleReminderUnit}>
+              <select className="date-warning" name="reminderUnit" onChange={this.onChange}>
                 {["day(s)", "month(s)", "year(s)"].map(timeSpan => {
                   return (
                     <option
@@ -233,14 +191,16 @@ class InfoEntry extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  itemName: state.expirationDates.item.itemName,
-  expMonth: state.expirationDates.item.expMonth,
-  expDay: state.expirationDates.item.expDay,
-  expYear: state.expirationDates.item.expYear,
-  reminderNum: state.expirationDates.item.reminderNum,
-  reminderUnit: state.expirationDates.item.reminderUnit,
-  setReminder: state.expirationDates.item.setReminder
-})
+// const mapStateToProps = state => ({
+//   itemName: state.expirationDates.item.itemName,
+//   expMonth: state.expirationDates.item.expMonth,
+//   expDay: state.expirationDates.item.expDay,
+//   expYear: state.expirationDates.item.expYear,
+//   reminderNum: state.expirationDates.item.reminderNum,
+//   reminderUnit: state.expirationDates.item.reminderUnit,
+//   setReminder: state.expirationDates.item.setReminder
+// })
 
-export default connect(mapStateToProps)(InfoEntry);
+// export default connect(mapStateToProps)(InfoEntry);
+
+export default InfoEntry;

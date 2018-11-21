@@ -6,17 +6,15 @@ mongoose.connect(
 
 const expSchema = mongoose.Schema({
   itemName: String,
-  expDay: Number,
-  expMonth: String,
-  expYear: Number,
+  expirationDate: Date,
   setReminder: Boolean,
-  reminderNum: String,
-  reminderUnit: String,
+  reminderDate: Date,
 });
 
 const ExpirationData = mongoose.model('ExpirationData', expSchema);
 
 const save = (expData) => {
+  console.log(expData);
   ExpirationData.create(expData, (err, res) => {
     if (err) console.log(err);
     else console.log(res);

@@ -10,7 +10,7 @@ class InfoEntry extends React.Component {
       itemName: "",
       expMonth: Date().slice(4, 7),
       expDay: new Date().getDate(),
-      expYear: new Date().getFullYear() - 2000,
+      expYear: new Date().getFullYear(),
       reminderNum: 'N/A',
       reminderUnit: 'N/A',
       setReminder: false
@@ -135,7 +135,7 @@ class InfoEntry extends React.Component {
     ];
 
     const years = [18, 19, 20, 21];
-    
+    console.log(this.state);
     return (
       <div>
         <form className="expiration-entry-form" onSubmit={this.handleSubmit}>
@@ -146,7 +146,7 @@ class InfoEntry extends React.Component {
           Expiration Date:
           <br />
           Day:
-          <select className="expiration-date" onChange={this.dayExpHandler}>
+          <select className="expiration-date" onChange={this.dayExpHandler} defaultValue={expDay}>
             {monthDays.map(day => {
               return (
                 <option
@@ -160,7 +160,7 @@ class InfoEntry extends React.Component {
             })}
           </select>
           Month:
-          <select className="expiration-date" onChange={this.monthExpHandler}>
+          <select className="expiration-date" onChange={this.monthExpHandler} defaultValue={expMonth}>
             {months.map(month => {
               return (
                 <option name="month" key={month} value={month}>
@@ -170,10 +170,10 @@ class InfoEntry extends React.Component {
             })}
           </select>
           Year:
-          <select className="expiration-date" onChange={this.yearExpHandler}>
+          <select className="expiration-date" onChange={this.yearExpHandler} defaultValue={expYear}>
             {years.map(year => {
               return (
-                <option name="year" key={year} value={year}>
+                <option name="year" key={year} value={2000 + year}>
                   {year}
                 </option>
               );

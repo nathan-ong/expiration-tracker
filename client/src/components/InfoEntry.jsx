@@ -1,20 +1,21 @@
 import React from "react";
 import $ from "jquery";
+import { connect } from "react-redux";
 import RenderedInfo from "./RenderedInfo.jsx";
 
 class InfoEntry extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      itemName: "",
-      expMonth: Date().slice(4, 7),
-      expDay: new Date().getDate(),
-      expYear: new Date().getFullYear(),
-      reminderNum: 'N/A',
-      reminderUnit: 'N/A',
-      setReminder: false
-    };
+  //   this.state = {
+  //     itemName: "",
+  //     expMonth: Date().slice(4, 7),
+  //     expDay: new Date().getDate(),
+  //     expYear: new Date().getFullYear(),
+  //     reminderNum: 'N/A',
+  //     reminderUnit: 'N/A',
+  //     setReminder: false
+  //   };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.itemNameHandler = this.itemNameHandler.bind(this);
     this.monthExpHandler = this.monthExpHandler.bind(this);
@@ -23,12 +24,17 @@ class InfoEntry extends React.Component {
     this.handleCheckbox = this.handleCheckbox.bind(this);
     this.handleReminderNum = this.handleReminderNum.bind(this);
     this.handleReminderUnit = this.handleReminderUnit.bind(this);
+    // this.onChange = this.onChange.bind(this);
   }
 
   handleSubmit(e) {
     console.log('submitting data');
     $.post("/save", this.state);
   }
+
+  // onChange(e) {
+  //   console.log(e.target.value);
+  // }
 
   itemNameHandler(e) {
     this.setState({
@@ -83,7 +89,7 @@ class InfoEntry extends React.Component {
   }
 
   render() {
-    const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.state;
+    const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.props;
     const monthDays = [
       1,
       2,
@@ -139,7 +145,7 @@ class InfoEntry extends React.Component {
         <form className="expiration-entry-form" onSubmit={this.handleSubmit}>
           Item:
           <br />
-          <input className="item-name" onChange={this.itemNameHandler} />
+          <input className="item-name" name="itemName" onChange={this.onChange} />
           <br />
           Expiration Date:
           <br />
@@ -227,4 +233,14 @@ class InfoEntry extends React.Component {
   }
 }
 
-export default InfoEntry;
+const mapStateToProps = state => ({
+  itemName: state.expirationDates.item.itemName,
+  expMonth: state.expirationDates.item.expMonth,
+  expDay: state.expirationDates.item.expDay,
+  expYear: state.expirationDates.item.expYear,
+  reminderNum: state.expirationDates.item.reminderNum,
+  reminderUnit: state.expirationDates.item.reminderUnit,
+  setReminder: state.expirationDates.item.setReminder
+})
+
+export default connect(mapStateToProps)(InfoEntry);

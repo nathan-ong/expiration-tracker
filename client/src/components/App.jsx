@@ -1,42 +1,46 @@
 import React from 'react';
-import $ from 'jquery';
 import InfoEntry from './InfoEntry.jsx';
 import moment from 'moment';
+import { connect } from 'react-redux';
+// import PropTypes from 'prop-types';
+import { getItems } from '../actions/itemActions.js';
 
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      expirationDates: [],
-    }
-  }
-  componentDidMount() {
-    $.get('/fetch', (expirationDates) => {
-      console.log(expirationDates)
-      this.setState({expirationDates});
-    });
+
+  componentWillMount() {
+    this.props.getItems();
+    console.log('this.props: ', this.props);
   }
 
   render() {
-    const { expirationDates } = this.state;
+    const { expirationDates } = this.props;
     return (
-      <div>
-        <InfoEntry />
-        {expirationDates.map(item => {
-          return (
-            <div className="item" key={item._id}>
-              <span>Item: {item.itemName}</span>
-              <br />
-              Expires {item.expirationDate? moment(item.expirationDate).fromNow() : null}
-              <br />
-              Expiration Date: {moment(item.expirationDate).format('MMM Do YY')}
-            </div>
-          )
-        })}
-      </div>
+        <div>
+          <InfoEntry />
+          {expirationDates.map(item => {
+            return (
+              <div className="item" key={item._id}>
+                <span>Item: {item.itemName}</span>
+                <br />
+                Expires {item.expirationDate? moment(item.expirationDate).fromNow() : null}
+                <br />
+                Expiration Date: {moment(item.expirationDate).format('MMM Do YYYY')}
+              </div>
+            )
+          })}
+        </div>
     )
   }
 }
+// App.propTypes = {
+//   getItems: PropTypes.func.isRequired,
+//   expirationDates: PropTypes.array.isRequired
+// }
 
-export default App;
+const mapStateToProps = state => {
+  console.log('mapStateToProps state: ', state);
+  return { expirationDates: state.expirationDates.items }
+}
+
+export default connect(mapStateToProps, { getItems })(App);

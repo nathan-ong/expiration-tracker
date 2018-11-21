@@ -21,7 +21,7 @@ const save = (expData) => {
 }
 
 const fetch = () => {
-  return ExpirationData.find();
+  return ExpirationData.find({}).sort('expirationDate');
 }
 
 module.exports = {

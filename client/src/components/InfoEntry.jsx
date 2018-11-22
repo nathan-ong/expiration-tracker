@@ -2,49 +2,24 @@ import React from "react";
 import $ from "jquery";
 import { connect } from "react-redux";
 import RenderedInfo from "./RenderedInfo.jsx";
-import { createItem } from "../actions/itemActions"
+import { createItem, toggleReminder } from "../actions/itemActions"
 
 class InfoEntry extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.state = {
-    //   itemName: "",
-    //   expMonth: Date().slice(4, 7),
-    //   expDay: new Date().getDate(),
-    //   expYear: new Date().getFullYear(),
-    //   reminderNum: 'N/A',
-    //   reminderUnit: 'N/A',
-    //   setReminder: false
-    // };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCheckbox = this.handleCheckbox.bind(this);
   }
 
-  handleSubmit(e) {
-    console.log('submitting data');
-    $.post("/save", this.state);
+  handleSubmit() {
+    const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.props;
+    const data = { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit };
+    $.post('/save', data);
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleCheckbox(e) {
-    if (document.getElementById("reminder-box").checked){
-      this.setState({
-        setReminder: true,
-        reminderNum: 1,
-        reminderUnit: 'day(s)'
-      });
-    } else {
-      this.setState({
-        setReminder: false,
-        reminderNum: 'N/A',
-        reminderUnit: 'N/A'
-      })
-    }
-  }
 
   render() {
     const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.props;
@@ -145,9 +120,8 @@ class InfoEntry extends React.Component {
           <input
             id="reminder-box"
             type="checkbox"
-            name="set-reminder"
-            value="setReminder"
-            onChange={this.handleCheckbox}
+            name="setReminder"
+            onChange={this.props.handleCheckbox}
           />
           Set Reminder
           <br />
@@ -203,11 +177,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   handleChange(event) {
-    console.log('triggering handleChange');
     dispatch(createItem(event));
+  },
+  handleCheckbox() {
+    dispatch(toggleReminder(document.getElementById("reminder-box").checked));
   }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InfoEntry);
-
-// export default InfoEntry;

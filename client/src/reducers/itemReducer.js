@@ -1,4 +1,4 @@
-import { GET_ITEMS, NEW_ITEM } from '../actions/types';
+import { GET_ITEMS, NEW_ITEM, TOGGLE_REMINDER } from '../actions/types';
 
 const initialState = {
   items: [],
@@ -16,18 +16,30 @@ const initialState = {
 export default function(state = initialState, action) {
   switch(action.type) {
     case GET_ITEMS:
-    console.log('inside of itemReducer GET_ITEMS case');
       return {
         ...state,
         items: action.payload
       }
     case NEW_ITEM:
       const newItem = {
-        ...state.item, ...action.payload
+        ...state.item,
+        ...action.payload
       }
       return {
         ...state,
         item: newItem
+      }
+    case TOGGLE_REMINDER:
+      state.item.setReminder = action.payload;
+      if (action.payload) {
+        state.item.reminderNum = 1;
+        state.item.reminderUnit = 'day(s)';
+      } else {
+        state.item.reminderNum = 'N/A';
+        state.item.reminderUnit = 'N/A';
+      }
+      return {
+        ...state,
       }
     default:
       return state;

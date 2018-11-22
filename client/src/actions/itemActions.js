@@ -1,10 +1,8 @@
-import { GET_ITEMS, NEW_ITEM } from './types';
+import { GET_ITEMS, NEW_ITEM, TOGGLE_REMINDER } from './types';
 import $ from 'jquery';
 
 export const getItems = () => dispatch => {
-  console.log('getItems invoked!');
   $.get('/fetch', (expirationDates) => {
-    console.log(expirationDates);
     dispatch({
       type: GET_ITEMS,
       payload: expirationDates
@@ -17,5 +15,12 @@ export const createItem = (event) => dispatch => {
   dispatch({
     type: NEW_ITEM,
     payload: itemData
+  })
+}
+
+export const toggleReminder = (boolean) => dispatch => {
+  dispatch({
+    type: TOGGLE_REMINDER,
+    payload: boolean
   })
 }

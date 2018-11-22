@@ -16,6 +16,7 @@ app.get('/fetch', function(req, res) {
 })
 
 app.post('/save', function(req, res) {
+  console.log(req.body)
   const months = {
     Jan: 0,
     Feb: 1,
@@ -47,18 +48,18 @@ app.post('/save', function(req, res) {
   }
 
   let reminderDate;
-  if (JSON.parse(setReminder)) {
+  if (setReminder) {
     reminderDate = setReminderDate(reminderNum, reminderUnit); 
   } else {
     reminderDate = null;
   }
-  
   const schemaFormat = {
     itemName,
     expirationDate,
     setReminder,
     reminderDate
   }
+  // console.log(schemaFormat);
 
   db.save(schemaFormat);
   res.send('POST request!');

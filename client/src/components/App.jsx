@@ -10,7 +10,6 @@ class App extends React.Component {
 
   componentWillMount() {
     this.props.getItems();
-    console.log('this.props: ', this.props);
   }
 
   render() {
@@ -39,7 +38,6 @@ class App extends React.Component {
 // }
 
 const mapStateToProps = state => {
-  console.log('mapStateToProps state: ', state);
   return { expirationDates: state.expirationDates.items }
 }
 

@@ -2,23 +2,23 @@ import React from "react";
 import $ from "jquery";
 import { connect } from "react-redux";
 import RenderedInfo from "./RenderedInfo.jsx";
+import { createItem } from "../actions/itemActions"
 
 class InfoEntry extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      itemName: "",
-      expMonth: Date().slice(4, 7),
-      expDay: new Date().getDate(),
-      expYear: new Date().getFullYear(),
-      reminderNum: 'N/A',
-      reminderUnit: 'N/A',
-      setReminder: false
-    };
+    // this.state = {
+    //   itemName: "",
+    //   expMonth: Date().slice(4, 7),
+    //   expDay: new Date().getDate(),
+    //   expYear: new Date().getFullYear(),
+    //   reminderNum: 'N/A',
+    //   reminderUnit: 'N/A',
+    //   setReminder: false
+    // };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheckbox = this.handleCheckbox.bind(this);
-    this.onChange = this.onChange.bind(this);
   }
 
   handleSubmit(e) {
@@ -47,7 +47,7 @@ class InfoEntry extends React.Component {
   }
 
   render() {
-    const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.state;
+    const { setReminder, itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = this.props;
     const monthDays = [
       1,
       2,
@@ -103,12 +103,12 @@ class InfoEntry extends React.Component {
         <form className="expiration-entry-form" onSubmit={this.handleSubmit}>
           Item:
           <br />
-          <input className="item-name" name="itemName" onChange={this.onChange} />
+          <input className="item-name" name="itemName" onChange={this.props.handleChange} />
           <br />
           Expiration Date:
           <br />
           Day:
-          <select className="expiration-date" name="expDay" onChange={this.onChange} defaultValue={expDay}>
+          <select className="expiration-date" name="expDay" onChange={this.props.handleChange} defaultValue={expDay}>
             {monthDays.map(day => {
               return (
                 <option
@@ -122,7 +122,7 @@ class InfoEntry extends React.Component {
             })}
           </select>
           Month:
-          <select className="expiration-date" name="expMonth" onChange={this.onChange} defaultValue={expMonth}>
+          <select className="expiration-date" name="expMonth" onChange={this.props.handleChange} defaultValue={expMonth}>
             {months.map(month => {
               return (
                 <option name="month" key={month} value={month}>
@@ -132,7 +132,7 @@ class InfoEntry extends React.Component {
             })}
           </select>
           Year:
-          <select className="expiration-date" name="expYear" onChange={this.onChange} defaultValue={expYear}>
+          <select className="expiration-date" name="expYear" onChange={this.props.handleChange} defaultValue={expYear}>
             {years.map(year => {
               return (
                 <option name="year" key={year} value={2000 + year}>
@@ -153,7 +153,7 @@ class InfoEntry extends React.Component {
           <br />
           {setReminder ? (
             <div className="reminder-dropdowns">
-              <select className="date-warning" name="reminderNum" onChange={this.onChange}>
+              <select className="date-warning" name="reminderNum" onChange={this.props.handleChange}>
                 {monthDays.map(num => {
                   return (
                     <option
@@ -166,7 +166,7 @@ class InfoEntry extends React.Component {
                   );
                 })}
               </select>
-              <select className="date-warning" name="reminderUnit" onChange={this.onChange}>
+              <select className="date-warning" name="reminderUnit" onChange={this.props.handleChange}>
                 {["day(s)", "month(s)", "year(s)"].map(timeSpan => {
                   return (
                     <option
@@ -191,16 +191,23 @@ class InfoEntry extends React.Component {
   }
 }
 
-// const mapStateToProps = state => ({
-//   itemName: state.expirationDates.item.itemName,
-//   expMonth: state.expirationDates.item.expMonth,
-//   expDay: state.expirationDates.item.expDay,
-//   expYear: state.expirationDates.item.expYear,
-//   reminderNum: state.expirationDates.item.reminderNum,
-//   reminderUnit: state.expirationDates.item.reminderUnit,
-//   setReminder: state.expirationDates.item.setReminder
-// })
+const mapStateToProps = state => ({
+  itemName: state.expirationDates.item.itemName,
+  expMonth: state.expirationDates.item.expMonth,
+  expDay: state.expirationDates.item.expDay,
+  expYear: state.expirationDates.item.expYear,
+  reminderNum: state.expirationDates.item.reminderNum,
+  reminderUnit: state.expirationDates.item.reminderUnit,
+  setReminder: state.expirationDates.item.setReminder
+})
 
-// export default connect(mapStateToProps)(InfoEntry);
+const mapDispatchToProps = dispatch => ({
+  handleChange(event) {
+    console.log('triggering handleChange');
+    dispatch(createItem(event));
+  }
+})
 
-export default InfoEntry;
+export default connect(mapStateToProps, mapDispatchToProps)(InfoEntry);
+
+// export default InfoEntry;

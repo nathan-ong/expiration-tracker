@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import InfoEntry from './InfoEntry';
+import store from '../store';
 
 test('should render 31 days to day dropdown', () => {
   const container = document.createElement('div');

@@ -11,3 +11,11 @@ export const getItems = () => dispatch => {
     })
   });
 }
+
+export const createItem = (event) => dispatch => {
+  const itemData = {[event.target.name]: event.target.value}
+  dispatch({
+    type: NEW_ITEM,
+    payload: itemData
+  })
+}

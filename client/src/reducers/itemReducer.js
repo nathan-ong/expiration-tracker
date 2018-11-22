@@ -21,11 +21,14 @@ export default function(state = initialState, action) {
         ...state,
         items: action.payload
       }
-    // case NEW_ITEM:
-    //   return {
-    //     ...state,
-    //     item: action.payload
-    //   }
+    case NEW_ITEM:
+      const newItem = {
+        ...state.item, ...action.payload
+      }
+      return {
+        ...state,
+        item: newItem
+      }
     default:
       return state;
   }

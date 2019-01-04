@@ -22,7 +22,7 @@ export default function Item(props) {
         <span>Item: {item.itemName}</span>
       </div>
       <div >
-        Expired {item.expirationDate? moment(item.expirationDate).fromNow() : null}
+        **EXPIRED {item.expirationDate? (moment(item.expirationDate).fromNow()).toUpperCase() : null}**
       </div>
       <div>
         Expiration Date: {moment(item.expirationDate).format('MMM Do YYYY')}

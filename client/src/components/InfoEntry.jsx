@@ -157,7 +157,7 @@ class InfoEntry extends React.Component {
             </div>
           ) : null}
           <br />
-          <RenderedInfo itemName={itemName} expDay={expDay} expYear={expYear} expMonth={expMonth} reminderNum={reminderNum} reminderUnit={reminderUnit}/>
+          <RenderedInfo />
           <button type="submit">Enter Item</button>
         </form>
       </div>

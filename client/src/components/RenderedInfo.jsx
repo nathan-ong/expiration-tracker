@@ -1,6 +1,7 @@
 import React from 'react'
+import { connect } from "react-redux";
 
-export default function RenderedInfo(props) {
+function RenderedInfo(props) {
 
   const { itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = props;
   return (
@@ -23,3 +24,15 @@ export default function RenderedInfo(props) {
     </div>
   )
 }
+
+const mapStateToProps = state => ({
+  itemName: state.expirationDates.item.itemName,
+  expMonth: state.expirationDates.item.expMonth,
+  expDay: state.expirationDates.item.expDay,
+  expYear: state.expirationDates.item.expYear,
+  reminderNum: state.expirationDates.item.reminderNum,
+  reminderUnit: state.expirationDates.item.reminderUnit,
+  setReminder: state.expirationDates.item.setReminder
+})
+
+export default connect(mapStateToProps)(RenderedInfo);

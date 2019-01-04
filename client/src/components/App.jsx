@@ -9,7 +9,7 @@ import { getItems } from '../actions/itemActions.js';
 class App extends React.Component {
 
   componentWillMount() {
-    this.props.getItems();
+    this.props.fetchItems();
   }
 
   render() {
@@ -41,4 +41,9 @@ const mapStateToProps = state => {
   return { expirationDates: state.expirationDates.items }
 }
 
-export default connect(mapStateToProps, { getItems })(App);
+const mapDispatchToProps = dispatch => ({
+  fetchItems() {
+    dispatch(getItems());
+  }
+})
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -6,21 +6,16 @@ function RenderedInfo(props) {
   const { itemName, expDay, expMonth, expYear, reminderNum, reminderUnit } = props;
   return (
     <div>
-      <span>Item: {itemName}</span>
-        <br />
-        Expiration
-        <br />
-        <span>Day: {expDay}</span>
-        <br />
-        <span>Month: {expMonth}</span>
-        <br />
-        <span>Year: {expYear}</span>
-        <br />
-        <br />
+      <div>
+        Item: {itemName}
+      </div>
+      <div>
+        Expires: {expDay}/{expMonth}/{expYear}
+      </div>
+      <div>
         Remind me
-        <br />
-        <span>{`${reminderNum} ${reminderUnit}`}</span>
-        <span> before expiration</span>
+          <span> {`${reminderNum} ${reminderUnit}`} before expiration</span>
+      </div>
     </div>
   )
 }

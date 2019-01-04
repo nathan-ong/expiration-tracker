@@ -1,16 +1,32 @@
 import React from 'react'
 import moment from 'moment';
 
-
 export default function Item(props) {
   const { item } = props;
   return (
+    item.expirationDate > Date() ?
     <div className="item">
-      <span>Item: {item.itemName}</span>
-      <br />
-      Expires {item.expirationDate? moment(item.expirationDate).fromNow() : null}
-      <br />
-      Expiration Date: {moment(item.expirationDate).format('MMM Do YYYY')}
+      <div>
+        <span>Item: {item.itemName}</span>
+      </div>
+      <div >
+        Expires {item.expirationDate? moment(item.expirationDate).fromNow() : null}
+      </div>
+      <div>
+        Expiration Date: {moment(item.expirationDate).format('MMM Do YYYY')}
+      </div>
+    </div>
+    : 
+    <div className="item expired">
+      <div>
+        <span>Item: {item.itemName}</span>
+      </div>
+      <div >
+        Expired {item.expirationDate? moment(item.expirationDate).fromNow() : null}
+      </div>
+      <div>
+        Expiration Date: {moment(item.expirationDate).format('MMM Do YYYY')}
+      </div>
     </div>
   )
 }

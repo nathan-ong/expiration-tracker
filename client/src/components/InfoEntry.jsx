@@ -74,8 +74,8 @@ class InfoEntry extends React.Component {
 
     const years = [18, 19, 20, 21];
     return (
-      <div>
-        <form className="expiration-entry-form" onSubmit={this.handleSubmit}>
+      <div className="expiration-entry-form">
+        <form onSubmit={this.handleSubmit}>
           Item:
           <br />
           <input className="item-name" name="itemName" onChange={this.props.handleChange} />

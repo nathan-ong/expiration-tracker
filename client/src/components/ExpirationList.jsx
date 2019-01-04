@@ -13,7 +13,7 @@ class ExpirationList extends Component {
     const { expirationDates } = this.props;
     console.log(expirationDates);
     return (
-        <div>
+        <div className="expire-list">
           {expirationDates.map(item => {
           return <Item item={item} key={item._id}/>
           })}
